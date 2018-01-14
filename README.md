@@ -7,7 +7,7 @@ For this workshop we'll use the GitHub API since it's well documented and famili
 
 ## Set up
 
-```
+```bash
 git clone git@github.com:sofiapoh/react-dynamic-data-workshop.git
 
 cd react-dynamic-data-workshop
