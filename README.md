@@ -27,3 +27,13 @@ Server running at http://localhost:1234
 ```
 
 If you do not see this message make sure you have the latest version of node (and npm) installed.
+
+### Getting an access token
+
+Next you'll need a GitHub auth token so you won't get rate limited!
+
+Go to: Settings > Developer Settings > Personal access tokens > Generate new token
+
+For this workshop you'll need to select `repo` and `user` scopes.
+
+When you get your access token remember to save it somewhere! (But don't put it on GitHub)
