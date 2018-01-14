@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "sanitize.css/sanitize.css";
-import "./globalStyles.css";
 
 import App from "./components/App";
 
