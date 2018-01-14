@@ -1,0 +1,10 @@
+.user-info--container {
+  display: flex;
+  align-items: center;
+}
+
+.user-info--img {
+  height: 24px;
+  width: 24px;
+  margin: 0 5px 0px 10px;
+}
