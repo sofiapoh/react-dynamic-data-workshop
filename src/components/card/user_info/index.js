@@ -1,6 +1,6 @@
 import React from "react";
 import "./style.css";
-import followerImg from "../../../public/followers.svg";
+import followerImg from "../../../../public/followers.svg";
 
 export const UserInfo = ({ name, followers }) => (
   <div className="user-info--container">

@@ -1,7 +1,8 @@
 import React from "react";
-import { getUserData } from "../../utils/data_helpers";
-import { CardImage } from "../card_image";
-import { UserInfo } from "../user_info";
+import { getUserData, getRepos } from "../../utils/data_helpers";
+import { CardImage } from "./card_image";
+import { UserInfo } from "./user_info";
+import { Repos } from "../repos";
 import "./style.css";
 
 export class Card extends React.Component {
@@ -28,13 +29,20 @@ export class Card extends React.Component {
       return <h3>...Loading</h3>;
     }
 
-    const { avatar_url, followers, name, public_repos, url } = this.state.data;
+    const {
+      avatar_url,
+      followers,
+      name,
+      public_repos,
+      repos_url,
+      url
+    } = this.state.data;
 
     return (
       <div className="card--wrapper">
         <CardImage url={avatar_url} />
         <UserInfo followers={followers} name={name} />
-        {/* add repos */}
+        {repos_url ? <Repos url={repos_url} /> : null}
       </div>
     );
   }

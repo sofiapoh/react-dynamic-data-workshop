@@ -1,6 +1,5 @@
 .card--wrapper {
-  height: 600px;
-  width: 500px;
+  width: 600px;
   display: flex;
   align-items: center;
   flex-direction: column;
