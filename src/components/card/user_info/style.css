@@ -1,10 +1,20 @@
 .user-info--container {
+  width: 50%;
   display: flex;
   align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .user-info--img {
-  height: 24px;
-  width: 24px;
-  margin: 0 5px 0px 10px;
+  height: 20px;
+  width: 20px;
+  margin: 0 5px;
+  vertical-align: middle;
+}
+
+.user-info--wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }

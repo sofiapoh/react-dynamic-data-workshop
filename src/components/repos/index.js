@@ -1,18 +1,18 @@
 import React from "react";
+import ErrorBoundary from "../ErrorBoundary";
 import "./style.css";
 import { getRepos } from "../../utils/data_helpers";
 import { Repo } from "./repo";
 
-export class Repos extends React.Component {
+class Repos extends React.Component {
   state = {
     repos: []
   };
 
   componentDidMount() {
-    getRepos(this.props.url, (err, data) => {
-      if (err) console.log(err);
-      this.setState({ repos: data });
-    });
+    if (this.props.url) {
+      getRepos(this.props.url).then(repos => this.setState({ repos }));
+    }
   }
 
   render() {
@@ -24,3 +24,5 @@ export class Repos extends React.Component {
     );
   }
 }
+
+export default ErrorBoundary(Repos);

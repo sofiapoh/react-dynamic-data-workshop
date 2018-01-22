@@ -9,20 +9,19 @@ const checkResponse = response => {
   return response.json();
 };
 
-export const getUserData = (username, callback) => {
-  fetch(`${API_BASE}/users/${username}?access_token=${accessToken}`)
+export const getUserData = username => {
+  return fetch(`${API_BASE}/users/${username}?access_token=${accessToken}`)
     .then(checkResponse)
-    .then(data => callback(null, data))
     .catch(err => {
-      callback(err);
+      throw new Error(`fetch getUserData failed ${err}`);
     });
 };
 
-export const getRepos = (url, callback) => {
-  fetch(`${url}?access_token=${accessToken}`)
+// TODO: these are the same
+export const getRepos = url => {
+  return fetch(`${url}?access_token=${accessToken}`)
     .then(checkResponse)
-    .then(data => callback(null, data))
     .catch(err => {
-      callback(err);
+      throw new Error(`fetch getUserData failed ${err}`);
     });
 };
