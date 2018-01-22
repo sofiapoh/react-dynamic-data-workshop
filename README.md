@@ -37,3 +37,9 @@ Go to: Settings > Developer Settings > Personal access tokens > Generate new tok
 For this workshop you'll need to select `repo` and `user` scopes.
 
 When you get your access token remember to save it somewhere! (But don't put it on GitHub)
+
+## What we'll be building?
+
+### A GitHub user card!
+
+![](https://user-images.githubusercontent.com/17658189/35216025-193031d4-ff5e-11e7-9289-8f7ca5c51a1a.png)
