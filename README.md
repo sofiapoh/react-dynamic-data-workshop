@@ -10,7 +10,8 @@ For this workshop we'll use the GitHub API since it's well documented and famili
 Start by opening the workshop folder, don't peek into solution just yet!
 
 ```bash
-git clone git@github.com:sofiapoh/react-dynamic-data-workshop.git
+# clone the repo, ssh or HTTPS, whatever you usually do!
+git clone git@github.com:sofiapoh/react-dynamic-data-workshop.git 
 
 cd react-dynamic-data-workshop
 
@@ -30,13 +31,13 @@ Server running at http://localhost:1234
 ✨  Built in 1.22s.
 ```
 
-If you do not see this message make sure you have the latest version of node (and npm) installed.
+If you do not see this message make sure you have the latest version of node (and npm) installed. Make sure you remember to `npm install`! 
 
 ### Getting an access token
 
 Next you'll need a GitHub auth token so you won't get rate limited!
 
-Go to: Settings > Developer Settings > Personal access tokens > Generate new token
+Go to: `Settings > Developer Settings > Personal access tokens > Generate new token`
 
 For this workshop you'll need to select `repo` and `user` scopes.
 
