@@ -14,6 +14,8 @@ git clone git@github.com:sofiapoh/react-dynamic-data-workshop.git
 
 cd react-dynamic-data-workshop
 
+cd workshop
+
 npm i
 
 #and finally
