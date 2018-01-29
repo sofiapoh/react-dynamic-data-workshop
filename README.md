@@ -7,6 +7,8 @@ For this workshop we'll use the GitHub API since it's well documented and famili
 
 ## Set up
 
+Start by opening the workshop folder, don't peek into solution just yet!
+
 ```bash
 git clone git@github.com:sofiapoh/react-dynamic-data-workshop.git
 
@@ -36,7 +38,11 @@ Go to: Settings > Developer Settings > Personal access tokens > Generate new tok
 
 For this workshop you'll need to select `repo` and `user` scopes.
 
-When you get your access token remember to save it somewhere! (But don't put it on GitHub)
+When you get your access token remember to save it somewhere! (But don't put it on GitHub). For example, create a file called `token.js` (already in the `.gitignore`) in the root of the workshop folder and put your token there.
+
+```javascript
+export const token = "yourAccessToken";
+```
 
 ## What we'll be building?
 
