@@ -11,7 +11,7 @@ Start by opening the workshop folder, don't peek into solution just yet!
 
 ```bash
 # clone the repo, ssh or HTTPS, whatever you usually do!
-git clone git@github.com:sofiapoh/react-dynamic-data-workshop.git 
+git clone git@github.com:sofiapoh/react-dynamic-data-workshop.git
 
 cd react-dynamic-data-workshop
 
@@ -31,7 +31,18 @@ Server running at http://localhost:1234
 ✨  Built in 1.22s.
 ```
 
-If you do not see this message make sure you have the latest version of node (and npm) installed. Make sure you remember to `npm install`! 
+If you do not see this message make sure you have the latest version of node (and npm) installed. Make sure you remember to `npm install`!
+
+If you're a Linux user you might get a following error when starting the dev server:
+
+```
+events.js:137
+throw er; // Unhandled 'error' event^
+```
+
+Running this command should fix it:
+
+`echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p`
 
 ### Getting an access token
 
@@ -55,14 +66,18 @@ export const token = "yourAccessToken";
 
 ## Walktrough
 
-Let's start by breaking our user card into some top level components. These components will be `Class` components so that we'll have access to state and lifecycle methods. These components will act as "containers" that will do our data fetching and then pass that data down to purely presentational _functional components_. 
+Before you start I'd like you to take a deep breath, you'll get errors through this workshop and they are annoying but they most likely are quite cryptic at start but you'll learn how to read them. If you get stuck try to get someone else to look at your code. Sometimes the bundler is going to be a bit funny with restarting the file watchers on the dev server so if you don't see changes and feel like you should, restart your server.
+
+Mostly: don't fall into despair, it's just code and you got this!
+
+Let's start by breaking our user card into some top level components. These components will be `Class` components so that we'll have access to state and lifecycle methods. These components will act as "containers" that will do our data fetching and then pass that data down to purely presentational _functional components_.
 
 (Your can read more about stateless vs. stateful components [here](https://code.tutsplus.com/tutorials/stateful-vs-stateless-functional-components-in-react--cms-29541))
 
 Based on our design it looks like our two top level components are going to be:
 
-1. `<UserHeader/>` with your Github avatar, name, username and follower count
-2. `<RepoList/>` With lists of your repositories with their name, descriptions, links and star count.
+1.  `<UserHeader/>` with your Github avatar, name, username and follower count
+2.  `<RepoList/>` With lists of your repositories with their name, descriptions, links and star count.
 
 We'll start with `<UserHeader/>`
 
@@ -101,8 +116,8 @@ export const getUserData = username => {
     });
 };
 ```
-__Note__: this function returns a `Promise`
 
+**Note**: this function returns a `Promise`
 
 Now that we have our `getUserData` function, let's import it to our component which will be rendering the data.
 
@@ -122,14 +137,22 @@ Hopefully you're seeing something in your console by now! That alone is not enou
 ```javascript=
   getUserData(username).then(data => this.setState({userData: data}));
 ```
+
 Let's take this data and use it to finally render some dynamic content.
 
-In your components `render` method destructure following keys out of `this.state.userData` : 
+In your components `render` method destructure following keys out of `this.state.userData` :
+
 ```javascript
-const { avatar_url, html_url, name, followers, repos_url } = this.state.userData
+const {
+  avatar_url,
+  html_url,
+  name,
+  followers,
+  repos_url
+} = this.state.userData;
 ```
 
-And pass them on your components like so: 
+And pass them on your components like so:
 
 ```javascript=
 render () {
@@ -142,15 +165,15 @@ render () {
 }
 ```
 
-Now you should see something! If not, let's get to what _might_ be going on next.
+Now you _might_ be seeing something! If not, that's fine, you've followed instructions correctly.
 
 ### When the data isn't there
 
-You might be seeing something like this now: 
+You might be seeing something like this now:
 
 `Uncaught TypeError: Cannot read property 'avatar_url' of null`
 
-Usually data over network gets to us slower than DOM renders content, this is when we need to provide a loading state so we're not trying to render content that is not there yet. In our case we'll just add a small safeguard in the start of the `render` function: 
+Usually data over network gets to us slower than DOM renders content, this is when we need to provide a loading state so we're not trying to render content that is not there yet. In our case we'll just add a small safeguard in the start of the `render` function:
 
 ```javascript
 if (!this.state.userData) {
@@ -160,15 +183,15 @@ if (!this.state.userData) {
 
 This will also help you to avoid UI errors and provide helpful error messages to your user. Note that unless the payload of the made request is not paritcularily heavy you might want to skip loading state and just return `null` to defer rendering until the content is ready. This way you won't get a janky looking flash of loading state before the component finishes loading.
 
-If at this point you feel fairly comfortable continuing ahead I'd like you to take some time to style your `<UserHeader/>` component to roughly match the design. You can use regular css, just create a file (usually something that matches the components name) and import it at the top of your file: 
+If at this point you feel fairly comfortable continuing ahead I'd like you to take some time to style your `<UserHeader/>` component to roughly match the design. You can use regular css, just create a file (usually something that matches the components name) and import it at the top of your file:
 
 ```javascript
-import 'userHeader.css'
+import "userHeader.css";
 ```
 
 This import is handled by your bundler (Parcel in this case) and doesn't make your CSS into Javascript.
 
-Note: in jsx attributes are camelCase and some are slightly different, for example:  `class` => `className`.
+Note: in jsx attributes are camelCase and some are slightly different, for example: `class` => `className`.
 
 ### What's next?
 
@@ -178,14 +201,14 @@ You might have noticed from the response we got from `getUserData` didn't includ
 
 ### Creating your repo list component
 
-Your next steps are: 
+Your next steps are:
 
-1. Create a new file for your `<RepoList/>` component.
-2. In the component, add some mock data and import it to the `<UserHeader/>` component.
-3. Refactor your `getUserData` function to take a url as an argument so you can use it on both of the components.
-4. Fetch data on the `<RepoList/>` components `componentDidMount` similarily to before. 
+1.  Create a new file for your `<RepoList/>` component.
+2.  In the component, add some mock data and import it to the `<UserHeader/>` component.
+3.  Refactor your `getUserData` function to take a url as an argument so you can use it on both of the components.
+4.  Fetch data on the `<RepoList/>` components `componentDidMount` similarily to before.
 
-There is a small gotcha! If you try to render `<RepoList/>` before the parent component has `repos_url` you're going to run into errors. One way to handle this is to use a ternary statement to render the component only when the data is fully loaded: 
+There is a small gotcha! If you try to render `<RepoList/>` before the parent component has `repos_url` you're going to run into errors. One way to handle this is to use a ternary statement to render the component only when the data is fully loaded:
 
 ```javascript=
 render () {
@@ -198,34 +221,44 @@ render () {
   )
 }
 ```
-When your `<RepoList/>` is rendering correctly we can start to render some real data. You've probably noticed the data we have is and `array`. A very common pattern is to create a function that we can use to map over the array of elements and render the full list. I'll give you a hint here:
+
+When your `<RepoList/>` is rendering correctly we can start to render some real data. You've probably noticed the data we have is and `array`. A very common pattern is to create a functional component for the data that you want to render and then map over your data dynamically creating a list of the components, we'll do that next:
+
+```javascript=
+// new file: repo.js for rendering a single repository
+
+const Repo = ({name, stargazers_count, description, html_url}) => {
+  return (
+    <li>{"Your jsx here!"}</li>
+  )
+}
+
+export default Repo
+```
+
+Don't forget to import your `Repo` component to the `RepoList!`
 
 ```javascript=
 // In RepoList
-
-renderList = () => {
-  return this.state.repos.map(repo => {
-    return <li>{repo.name}</li>
-  })
-}
-
 render () {
   return (
-   <ul>{this.renderList}</ul>
+   <ul>{this.state.repos.map(repo => <Repo key={repo.id} {...repo />})}</ul>
   )
 }
 ```
 
+All dynamically rendered components like our `Repo` here need a `key` prop so React can keep track of the correct elements being added/removed from the DOM.
+
 When you have a list of repos rendering with the data which matches the designs, add some styles! CSS is underrated!
 
-Great job! :sparkles: 
+Great job! :sparkles:
 
 ### Stretch goals
 
-- Refactor the children of both class components into presentational functional components.
-- More CSS
-- Create a form input to dynamically create a Github user card from anyone
+* Refactor the children of both class components into presentational functional components.
+* More CSS
+* Create a form input to dynamically create a Github user card from any username
 
-### Feedback? Improvements? Clarification? 
+### Feedback? Improvements? Clarification?
 
 Create a pull request or an issue!

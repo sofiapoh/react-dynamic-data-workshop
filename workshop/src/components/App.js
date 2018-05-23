@@ -1,7 +1,12 @@
 import React from "react";
-import Card from "./card";
+
 export default class App extends React.Component {
+  state = {
+    hello:
+      "Let's get started! You can delete this state as you won't need it going forward."
+  };
+
   render() {
-    return <Card />;
+    return <div>{this.state.hello}</div>;
   }
 }
