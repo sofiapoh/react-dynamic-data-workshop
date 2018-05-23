@@ -1,5 +1,5 @@
 import React from "react";
-import ErrorBoundary from "../ErrorBoundary";
+import ErrorBoundary from "../error_boundary";
 import { getData, API_BASE } from "../../utils/data_helpers";
 import { CardImage } from "./card_image";
 import { UserInfo } from "./user_info";

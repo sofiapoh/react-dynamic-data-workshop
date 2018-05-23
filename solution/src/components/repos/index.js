@@ -1,5 +1,5 @@
 import React from "react";
-import ErrorBoundary from "../ErrorBoundary";
+import ErrorBoundary from "../error_boundary";
 import "./style.css";
 import { getData } from "../../utils/data_helpers";
 import { Repo } from "./repo";
