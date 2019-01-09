@@ -242,7 +242,7 @@ Don't forget to import your `Repo` component to the `RepoList!`
 // In RepoList
 render () {
   return (
-   <ul>{this.state.repos.map(repo => <Repo key={repo.id} {...repo />})}</ul>
+   <ul>{this.state.repos.map(repo => <Repo key={repo.id} {...repo} />)}</ul>
   )
 }
 ```
