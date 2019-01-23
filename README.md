@@ -1,6 +1,6 @@
 # React with dynamic data workshop for Founders & Coders
 
-The purpose of this workshop is to understand the most common usecase for React in modern frontend.
+The purpose of this workshop is to learn one of the most common usecases for modern frontend frameworks (React in this case).
 That usecase is fetching some data from an API and then rendering it.
 
 For this workshop we'll use the GitHub API since it's well documented and familiar to most students.
@@ -19,9 +19,17 @@ cd workshop
 
 npm i
 
+# or
+
+yarn
+
 #and finally
 
 npm start
+
+# or 
+
+yarn start
 ```
 
 You should now see the following message:
@@ -31,7 +39,7 @@ Server running at http://localhost:1234
 ✨  Built in 1.22s.
 ```
 
-If you do not see this message make sure you have the latest version of node (and npm) installed. Make sure you remember to `npm install`!
+If you do not see this message make sure you have a version of node which is above 8 and npm or yarn installed. Make sure you remember to install dependencies.
 
 If you're a Linux user you might get a following error when starting the dev server:
 
@@ -183,21 +191,21 @@ if (!this.state.userData) {
 
 This will also help you to avoid UI errors and provide helpful error messages to your user. Note that unless the payload of the made request is not paritcularily heavy you might want to skip loading state and just return `null` to defer rendering until the content is ready. This way you won't get a janky looking flash of loading state before the component finishes loading.
 
-If at this point you feel fairly comfortable continuing ahead I'd like you to take some time to style your `<UserHeader/>` component to roughly match the design. You can use regular css, just create a file (usually something that matches the components name) and import it at the top of your file:
+If you feel fairly comfortable continuing ahead I'd like you to take some time to style your `<UserHeader/>` component to roughly match the design. You can use regular css, just create a file (a common convention is to name the css file to match the js filename) and import it at the top of your file:
 
 ```javascript
-import "userHeader.css";
+import "./userHeader.css";
 ```
 
-This import is handled by your bundler (Parcel in this case) and doesn't make your CSS into Javascript.
+This import is handled by your bundler (Parcel in this case) and doesn't transform CSS into Javascript.
 
 Note: in jsx attributes are camelCase and some are slightly different, for example: `class` => `className`.
 
 ### What's next?
 
-Hopefully now you'll have a nice looking header component for our Github user card! Next we'll tackle creating the list of your repositories.
+Hopefully you'll now have a nice looking header component for our Github user card! Next we'll tackle creating a list of your repositories.
 
-You might have noticed from the response we got from `getUserData` didn't include the repos so we'll create another stateful component which fetches it's own data. We did however get a `repos_url` from the response which we'll pass down as a prop to our new component `<RepoList/>`.
+You might have noticed from the response we got from `getUserData` didn't include your repositories so we'll create another stateful component which fetches it's own data. We did however get a `repos_url` from the response which we'll pass down as a prop to our new component `<RepoList/>`.
 
 ### Creating your repo list component
 
@@ -208,7 +216,7 @@ Your next steps are:
 3.  Refactor your `getUserData` function to take a url as an argument so you can use it on both of the components.
 4.  Fetch data on the `<RepoList/>` components `componentDidMount` similarily to before.
 
-There is a small gotcha! If you try to render `<RepoList/>` before the parent component has `repos_url` you're going to run into errors. One way to handle this is to use a ternary statement to render the component only when the data is fully loaded:
+**There is a small gotcha!** If you try to render `<RepoList/>` before the parent component has `repos_url` you're going to run into errors. One way to handle this is to use a ternary statement to render the component only when the data is fully loaded:
 
 ```javascript=
 render () {
@@ -216,13 +224,13 @@ render () {
     <div>
       <img src={avatar_url}/>
       <h2>{name}</h2>
-      {repos_url ? <RepoList url={repos_url} /> : null}
+      {repos_url ? <RepoList url={repos_url} /> : null} // Could render a loading component here instead
     </div>
   )
 }
 ```
 
-When your `<RepoList/>` is rendering correctly we can start to render some real data. You've probably noticed the data we have is and `array`. A very common pattern is to create a functional component for the data that you want to render and then map over your data dynamically creating a list of the components, we'll do that next:
+When your `<RepoList/>` is rendering correctly we can start to render some real data. You've probably noticed the data we have is an `Array`. A very common pattern is to create a functional component for the data that you want to render and then map over your data dynamically creating a list of the components. That's what we'll do next:
 
 ```javascript=
 // new file: repo.js for rendering a single repository
@@ -236,7 +244,7 @@ const Repo = ({name, stargazers_count, description, html_url}) => {
 export default Repo
 ```
 
-Don't forget to import your `Repo` component to the `RepoList!`
+Don't forget to import your `Repo` component into the `RepoList!`
 
 ```javascript=
 // In RepoList
