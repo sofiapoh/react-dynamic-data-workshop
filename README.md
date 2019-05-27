@@ -27,7 +27,7 @@ yarn
 
 npm start
 
-# or 
+# or
 
 yarn start
 ```
@@ -78,11 +78,7 @@ Before you start I'd like you to take a deep breath, you'll get errors through t
 
 Mostly: don't fall into despair, it's just code and you got this!
 
-Let's start by breaking our user card into some top level components. These components will be `Class` components so that we'll have access to state and lifecycle methods. These components will act as "containers" that will do our data fetching and then pass that data down to purely presentational _functional components_.
-
-(Your can read more about stateless vs. stateful components [here](https://code.tutsplus.com/tutorials/stateful-vs-stateless-functional-components-in-react--cms-29541))
-
-Based on our design it looks like our two top level components are going to be:
+Let's start by breaking our user card into some top level components. Based on our design it looks like our two top level components are going to be:
 
 1.  `<UserHeader/>` with your Github avatar, name, username and follower count
 2.  `<RepoList/>` With lists of your repositories with their name, descriptions, links and star count.
@@ -117,7 +113,9 @@ const checkResponse = response => {
 };
 
 export const getUserData = username => {
-  return fetch(`https://api.github.com/users/${username}?access_token=${accessToken}`)
+  return fetch(
+    `https://api.github.com/users/${username}?access_token=${accessToken}`
+  )
     .then(checkResponse)
     .catch(err => {
       throw new Error(`fetch getUserData failed ${err}`);
@@ -143,7 +141,7 @@ componentDidMount() {
 Hopefully you're seeing something in your console by now! That alone is not enough for us to get rendering, we need to set this data in our components `data` state variable we defined earlier in order for us to consume it outside `componentDidMount`.
 
 ```javascript=
-  getUserData(username).then(data => this.setState({userData: data}));
+getUserData(username).then(data => this.setState({ userData: data }));
 ```
 
 Let's take this data and use it to finally render some dynamic content.
@@ -156,7 +154,7 @@ const {
   html_url,
   name,
   followers,
-  repos_url
+  repos_url,
 } = this.state.userData;
 ```
 
@@ -235,13 +233,11 @@ When your `<RepoList/>` is rendering correctly we can start to render some real 
 ```javascript=
 // new file: repo.js for rendering a single repository
 
-const Repo = ({name, stargazers_count, description, html_url}) => {
-  return (
-    <li>{"Your jsx here!"}</li>
-  )
-}
+const Repo = ({ name, stargazers_count, description, html_url }) => {
+  return <li>{"Your jsx here!"}</li>;
+};
 
-export default Repo
+export default Repo;
 ```
 
 Don't forget to import your `Repo` component into the `RepoList!`
@@ -263,9 +259,9 @@ Great job! :sparkles:
 
 ### Stretch goals
 
-* Refactor the children of both class components into presentational functional components.
-* More CSS
-* Create a form input to dynamically create a Github user card from any username
+- Refactor the children of both class components into presentational functional components.
+- More CSS
+- Create a form input to dynamically create a Github user card from any username
 
 ### Feedback? Improvements? Clarification?
 
