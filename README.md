@@ -201,23 +201,23 @@ You might have noticed from the response we got from `getUserData` didn't includ
 
 Your next steps are:
 
-1.  Create a new file for your `<RepoList/>` component.
-2.  In the component, add some mock data and import it to the `<UserHeader/>` component.
-3.  Refactor your `getUserData` function to take a url as an argument so you can use it on both of the components.
-4.  Fetch data on the `<RepoList/>` components `componentDidMount` similarily to before.
+1. Create a new file for your `<RepoList/>` component.
+2. Add some mock data to the component
+3. Import it into the `UserHeader` file.
+4. Refactor your `getUserData` function to take a url as an argument so you can use it on both of the components.
+5. Fetch data in the `<RepoList/>` component with `useEffect` similarly to before.
 
 **There is a small gotcha!** If you try to render `<RepoList/>` before the parent component has `repos_url` you're going to run into errors. One way to handle this is to use a ternary statement to render the component only when the data is fully loaded:
 
 ```javascript
-render () {
-  return (
-    <div>
-      <img src={avatar_url}/>
-      <h2>{name}</h2>
-      {repos_url ? <RepoList url={repos_url} /> : null} // Could render a loading component here instead
-    </div>
-  )
-}
+return (
+  <div>
+    <img src={avatar_url} />
+    <h2>{name}</h2>
+    {repos_url ? <RepoList url={repos_url} /> : null} // Could render a loading
+    component here instead
+  </div>
+);
 ```
 
 When your `<RepoList/>` is rendering correctly we can start to render some real data. You've probably noticed the data we have is an `Array`. A very common pattern is to create a functional component for the data that you want to render and then map over your data dynamically creating a list of the components. That's what we'll do next:
