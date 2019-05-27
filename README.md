@@ -102,7 +102,7 @@ Now we'll need a function that gets your github user data. Create a function tha
 You can use any of your preferred method to create an API request but I'll give an example with the `fetch` API. Don't forget to import the access token you created earlier, it's needed to not get rate limited. Try not to copy paste, you'll learn more if you don't!
 
 ```javascript
-import { accessToken } from "../../token";
+import { token } from "../../token";
 
 const checkResponse = response => {
   if (response.status !== 200) {
@@ -113,9 +113,7 @@ const checkResponse = response => {
 };
 
 export const getUserData = username => {
-  return fetch(
-    `https://api.github.com/users/${username}?access_token=${accessToken}`
-  )
+  return fetch(`https://api.github.com/users/${username}?access_token=${token}`)
     .then(checkResponse)
     .catch(err => {
       throw new Error(`fetch getUserData failed ${err}`);
