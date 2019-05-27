@@ -127,46 +127,40 @@ Now that we have our `getUserData` function, let's import it to our component wh
 
 ### Lifecycle and rendering
 
-We've heard about React lifecycle methods already, they are a place to run functions related to the components lifecycle. In our case we'll want to run a data fetching function as the component mounts the dom. Sounds familiar? Let's define `componentDidMount()` where we'll call `getUserData`.
+We've heard about React effects already, they are a place to do side-effects. In our case we'll want to run a data fetching function once the component mounts into the dom. Sounds familiar? Let's create an effect with `React.useEffect()` where we'll call `getUserData`.
 
 ```javascript
-componentDidMount() {
+React.useEffect(() => {
   const username = "sofiapoh";
   getUserData(username).then(data => console.log(data));
-}
+}, []);
 ```
 
-Hopefully you're seeing something in your console by now! That alone is not enough for us to get rendering, we need to set this data in our components `data` state variable we defined earlier in order for us to consume it outside `componentDidMount`.
+Don't forget the second argument to `useEffect`—the empty array. This will tell React to only run the effect once (you don't want to make thousands of requests in a row and get blocked by Github).
+
+Hopefully you're seeing something in your console by now! That alone is not enough for us to get rendering, we need to set this data in our components `userData` state variable we defined earlier in order for us to consume it outside the effect.
 
 ```javascript
-getUserData(username).then(data => this.setState({ userData: data }));
+getUserData(username).then(data => setUserData(data));
 ```
 
 Let's take this data and use it to finally render some dynamic content.
 
-In your components `render` method destructure following keys out of `this.state.userData` :
+Before your components return statement destructure following keys out of `userData` :
 
 ```javascript
-const {
-  avatar_url,
-  html_url,
-  name,
-  followers,
-  repos_url,
-} = this.state.userData;
+const { avatar_url, html_url, name, followers, repos_url } = userData;
 ```
 
 And pass them on your components like so:
 
 ```javascript
-render () {
-  return (
-    <div>
-      <img src={avatar_url}/>
-      {/*More stuff here!*/}
-    </div>
-  )
-}
+return (
+  <div>
+    <img src={avatar_url} />
+    {/*More stuff here!*/}
+  </div>
+);
 ```
 
 Now you _might_ be seeing something! If not, that's fine, you've followed instructions correctly.
