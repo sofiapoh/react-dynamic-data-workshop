@@ -171,15 +171,15 @@ You might be seeing something like this now:
 
 `Uncaught TypeError: Cannot read property 'avatar_url' of null`
 
-Usually data over network gets to us slower than DOM renders content, this is when we need to provide a loading state so we're not trying to render content that is not there yet. In our case we'll just add a small safeguard in the start of the `render` function:
+Usually data over network gets to us slower than DOM renders content, this is when we need to provide a loading state so we're not trying to render content that is not there yet. In our case we'll just add a small safeguard before we destructure:
 
 ```javascript
-if (!this.state.userData) {
+if (!userData) {
   return <h3>...Loading</h3>;
 }
 ```
 
-This will also help you to avoid UI errors and provide helpful error messages to your user. Note that unless the payload of the made request is not paritcularily heavy you might want to skip loading state and just return `null` to defer rendering until the content is ready. This way you won't get a janky looking flash of loading state before the component finishes loading.
+This will also help you to avoid UI errors and provide helpful error messages to your user. Note that unless the payload of the made request is particularly heavy you might want to skip loading state and just return `null` to defer rendering until the content is ready. This way you won't get a janky looking flash of loading state before the component finishes loading.
 
 If you feel fairly comfortable continuing ahead I'd like you to take some time to style your `<UserHeader/>` component to roughly match the design. You can use regular css, just create a file (a common convention is to name the css file to match the js filename) and import it at the top of your file:
 
