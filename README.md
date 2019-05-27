@@ -236,11 +236,13 @@ Don't forget to import your `Repo` component into the `RepoList!`
 
 ```javascript
 // In RepoList
-render () {
-  return (
-   <ul>{this.state.repos.map(repo => <Repo key={repo.id} {...repo} />)}</ul>
-  )
-}
+return (
+  <ul>
+    {repos.map(repo => (
+      <Repo key={repo.id} {...repo} />
+    ))}
+  </ul>
+);
 ```
 
 All dynamically rendered components like our `Repo` here need a `key` prop so React can keep track of the correct elements being added/removed from the DOM.
