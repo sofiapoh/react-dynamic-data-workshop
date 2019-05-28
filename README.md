@@ -127,7 +127,7 @@ Now that we have our `getUserData` function, let's import it to our component wh
 
 ### Lifecycle and rendering
 
-We've heard about React effects already, they are a place to do side-effects. In our case we'll want to run a data fetching function once the component mounts into the dom. Sounds familiar? Let's create an effect with `React.useEffect()` where we'll call `getUserData`.
+We've heard about React effects already, they are a place to do side-effects such as fetching data. In our case we'll want to run a data fetching function once the component mounts into the dom. Sounds familiar? Let's create an effect with `React.useEffect()` where we'll call `getUserData`.
 
 ```javascript
 React.useEffect(() => {
