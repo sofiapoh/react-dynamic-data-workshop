@@ -253,7 +253,7 @@ Great job! :sparkles:
 
 ### Stretch goals
 
-- Refactor the children of both class components into presentational functional components.
+- Refactor the children of both stateful components into separate files and pass the state values down to them
 - More CSS
 - Create a form input to dynamically create a Github user card from any username
 
