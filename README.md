@@ -136,7 +136,7 @@ React.useEffect(() => {
 }, []);
 ```
 
-Don't forget the second argument to `useEffect`—the empty array. This will tell React to only run the effect once (you don't want to make thousands of requests in a row and get rate limited by Github).
+Don't forget the second argument to `useEffect`—the empty array. This will tell React to only run the effect once. Without this your component will re-render every time you update your state, which will re-run the effect, which will update state, which will re-render your component, which will re-run the effect... (you don't want to make thousands of requests in a row and get rate limited by Github).
 
 Hopefully you're seeing something in your console by now! That alone is not enough for us to get rendering, we need to set this data in our components `userData` state variable we defined earlier in order for us to consume it outside the effect.
 
