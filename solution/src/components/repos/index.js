@@ -8,7 +8,7 @@ function Repos(props) {
   const [repos, setRepos] = React.useState([]);
   React.useEffect(() => {
     getData(props.url).then(repos => setRepos(repos));
-  }, [props.repos]);
+  }, [props.url]);
   return (
     <ul className="repos--list">
       {repos.map(repo => (
