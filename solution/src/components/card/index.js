@@ -25,7 +25,7 @@ function Card() {
     public_repos,
     repos_url,
     login,
-    url
+    url,
   } = userData;
   return (
     <div className="card--wrapper">
