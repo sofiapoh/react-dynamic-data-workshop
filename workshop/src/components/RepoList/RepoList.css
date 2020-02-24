@@ -1,0 +1,13 @@
+.userRepo{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+.RepoField{
+    display: flex;
+    flex-direction: row;
+
+
+    width: 45%;
+}

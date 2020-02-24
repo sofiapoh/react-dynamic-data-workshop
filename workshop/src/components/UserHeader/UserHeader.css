@@ -1,0 +1,19 @@
+body,.mainContainer,.container{
+    width: 100%;
+    display: flex;
+}
+.userProfile{
+    margin: 5px auto;
+    display: flex;
+    flex-direction: column;
+    width: 65%;
+    border: 0.5ch solid BLACK;
+}
+.userDetails{
+    display: flex;
+    justify-content: space-around;
+}
+img{
+    height: 40vh;
+    width: 100%;
+}
