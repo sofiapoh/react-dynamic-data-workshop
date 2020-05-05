@@ -1,8 +1,9 @@
 import React from "react";
+import UserHeader from "./UserHeader"
 
 export default function App() {
-  const [placeholder, setPlaceholder] = React.useState(
-    "Let's get started! You can delete this state as you won't need it going forward."
-  );
-  return <div>{placeholder}</div>;
+
+  return (
+    <UserHeader />
+  )
 }
