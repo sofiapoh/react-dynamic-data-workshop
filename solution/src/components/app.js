@@ -1,6 +1,9 @@
 import React from "react";
-import Card from "./card";
+import UserHeader from "./UserHeader"
 
 export default function App() {
-  return <Card />;
+
+  return (
+    <UserHeader />
+  )
 }
