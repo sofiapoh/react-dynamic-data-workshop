@@ -1,9 +1,9 @@
 # React with dynamic data workshop for Founders & Coders
 
-The purpose of this workshop is to learn one of the most common usecases for modern frontend frameworks (React in this case).
-That usecase is fetching some data from an API and then rendering it.
+The purpose of this workshop is to learn one of the most common use cases for modern frontend frameworks (React in this case).
+That use case is fetching some data from an API and then rendering it.
 
-For this workshop we'll use the GitHub API since it's well documented and familiar to most students.
+For this workshop, we'll use the GitHub API since it's well documented and familiar to most students.
 
 ## Set up
 
@@ -41,7 +41,7 @@ Server running at http://localhost:1234
 
 If you do not see this message make sure you have a version of node which is above 8 and npm or yarn installed. Make sure you remember to install dependencies.
 
-If you're a Linux user you might get a following error when starting the dev server:
+If you're a Linux user you might get the following error when starting the dev server:
 
 ```
 events.js:137
@@ -54,13 +54,13 @@ Running this command should fix it:
 
 ### Getting an access token
 
-Next you'll need a GitHub auth token so you won't get rate limited!
+Next, you'll need a GitHub auth token so that you won't get rate limited!
 
 Go to: `Settings > Developer Settings > Personal access tokens > Generate new token`
 
-For this workshop you'll need to select `repo` and `user` scopes.
+For this workshop, you'll need to select `repo` and `user` scopes.
 
-When you get your access token remember to save it somewhere! (But don't put it on GitHub). For example, create a file called `token.js` (already in the `.gitignore`) in the root of the workshop folder and put your token there.
+When you get your access token, remember to save it somewhere! (But don't put it on GitHub). Create a file called `token.js` in the root of the workshop folder and put your token there. The file is already in the `.gitignore` for the workshop because we never want to commit private API tokens.
 
 ```javascript
 export const token = "yourAccessToken";
@@ -72,34 +72,83 @@ export const token = "yourAccessToken";
 
 ![](https://user-images.githubusercontent.com/17658189/35216025-193031d4-ff5e-11e7-9289-8f7ca5c51a1a.png)
 
-## Walktrough
+## Walkthrough
 
-Before you start I'd like you to take a deep breath, you'll get errors through this workshop and they are annoying but they most likely are quite cryptic at start but you'll learn how to read them. If you get stuck try to get someone else to look at your code. Sometimes the bundler is going to be a bit funny with restarting the file watchers on the dev server so if you don't see changes and feel like you should, restart your server.
+Before you start I'd like you to take a deep breath, you'll get errors through this workshop, and they are annoying and cryptic at the start, but you'll learn how to read them. The most important trick is to always scroll to the top of your error output since that's where the most relevant errors are usually. If you get stuck, try to get someone else to look at your code. Sometimes the bundler is going to be a bit funny with restarting the file watchers on the dev server so if you don't see changes and feel like you should, restart your server.
 
 Mostly: don't fall into despair, it's just code and you got this!
 
-Let's start by breaking our user card into some top level components. Based on our design it looks like our two top level components are going to be:
+### Note about structure
+
+Before we get started, I'd like to focus on how we're going to be arranging which components fetch data and which just render it so that we'll have an easier time later in the course walkthrough.
+
+Let's start by breaking our user card into some top-level components. Based on our design, it looks like our two important components are going to be:
 
 1.  `<UserHeader/>` with your Github avatar, name, username and follower count
 2.  `<RepoList/>` With lists of your repositories with their name, descriptions, links and star count.
 
-We'll start with `<UserHeader/>`
+Above these components, we'll have `App.js` which is where we'll keep the code for our initial data fetch. Here is a small breakdown on how we could structure our components for this exercise and what will be the responsibility of each component.
+There isn't a single right way to architect your component structure and something even this simple can be done multiple ways. This is just one way to think about this and will make it easier not to get stuck during this workshop.
 
-### Creating UserHeader
+![](https://i.imgur.com/oRW3Yf9.png)
+
+
+Let's get started with creating our `UserHeader` and then fetching some data in the `App`!
+
+### Creating UserHeader & setting up App
 
 Start by creating a new file for our `UserHeader` component.
 
-Going back to the design, create the skeleton for how your component will come together, add the elements with some hardcoded values first to check something is rendering. We'll also need to hold the data we'll get back from the api somewhere so let's also create a state value called `userData` with the initial value of `null`.
+Going back to the design, create the layout for the `UserHeader`, think about what props you'll need. Import `UserHeader` to `App` and pass some hardcoded props to it initially to make sure everything is working.
 
-Don't forget to import this component to your `<App/>` component!
+```jsx
+// in App
 
-Now let's fill this component with some real user data! I personally like to separate functions that are not directly related to rendering outside the component, into another folder which is commonly called `utils`, create this new folder inside se `src` folder of your project and create a file called `getUserData.js`.
+// ...
+import UserHeader from './your/path/to/UserHeader' // make sure you check if this is a named export or default export 
+
+ const App = () => {
+  // ...
+  
+  return (
+    <main>
+      <UserHeader 
+        imgSrc="placeholder.png"
+        userName="kitten"
+        userUrl="test.com"
+        followersCount={44}
+      />
+    </main>
+  )
+ }
+
+```
+We'll also need to hold the data we're getting back from the API somewhere so let's also create a state value called `userData` with the initial value of `null`.
+
+```jsx
+ const App = () => {
+  const [userData, setUserData] = React.useState(null);
+  
+  return (
+    <main>
+      <UserHeader 
+        imgSrc="placeholder.png"
+        userName="kitten"
+        userUrl="test.com"
+        followersCount={44}
+      />
+    </main>
+  )
+ }
+```
+
+Now let's get some real data showing! I like to separate functions that are not directly related to rendering outside the component, into another folder which is commonly called `utils`, create this new folder inside the `src` folder of your project and create a file called `getUserData.js`.
 
 ### Get the data
 
-Now we'll need a function that gets your github user data. Create a function that makes a request to `https://api.github.com/users/{{your username}}?access_token={{your access token}}`
+Now we'll need a function that gets your GitHub user data. Create a function that makes a request to `https://api.github.com/users/{{your username}}?access_token={{your access token}}`
 
-You can use any of your preferred method to create an API request but I'll give an example with the `fetch` API. Don't forget to import the access token you created earlier, it's needed to not get rate limited. Try not to copy paste, you'll learn more if you don't!
+You can use any of your preferred method to create an API request, but I'll give an example with the `fetch` API. Don't forget to import the access token you created earlier; it's needed not to get rate limited. Try not to copy-paste; you'll learn more if you don't!
 
 ```javascript
 import { token } from "../../token";
@@ -127,18 +176,33 @@ Now that we have our `getUserData` function, let's import it to our component wh
 
 ### Lifecycle and rendering
 
-We've heard about React effects already, they are a place to do side-effects such as fetching data. In our case we'll want to run a data fetching function once the component mounts into the dom. Sounds familiar? Let's create an effect with `React.useEffect()` where we'll call `getUserData`.
+We've heard about React effects already (if not, [here](https://reactjs.org/docs/hooks-effect.html) is a refresher that will be relevant for the next part). They are a place to execute side-effects, such as fetching data. In our case, we'll want to run a data fetching function once the component mounts into the DOM. Sounds familiar? Let's create an effect inside the `App` component with `React.useEffect()` where we'll call `getUserData`.
 
-```javascript
-React.useEffect(() => {
-  const username = "sofiapoh";
-  getUserData(username).then(data => console.log(data));
-}, []);
+```jsx
+ const App = () => {
+  const [userData, setUserData] = React.useState(null);
+  
+  React.useEffect(() => {
+    const username = "sofiapoh";
+    getUserData(username).then(data => console.log(data));
+  }, []);
+  
+  return (
+    <main>
+      <UserHeader 
+        imgSrc="placeholder.png"
+        userName="kitten"
+        userUrl="test.com"
+        followersCount={44}
+      />
+    </main>
+  )
+ }
 ```
 
-Don't forget the second argument to `useEffect`—the empty array. This will tell React to only run the effect once. Without this your component will re-render every time you update your state, which will re-run the effect, which will update state, which will re-render your component, which will re-run the effect... (you don't want to make thousands of requests in a row and get rate limited by Github).
+Don't forget the second argument to `useEffect`—the empty array. This will tell React to only run the effect once. Without this your component will re-render every time you update your state, which will re-run the effect, which will update the state, which will re-render your component, which will re-run the effect... (you don't want to make thousands of requests in a row and get rate limited by Github).
 
-Hopefully you're seeing something in your console by now! That alone is not enough for us to get rendering, we need to set this data in our components `userData` state variable we defined earlier in order for us to consume it outside the effect.
+Hopefully you're seeing something in your console by now! That alone is not enough for us to get rendering, we need to set this data in our components `userData` state variable we defined earlier for us to consume it outside the effect.
 
 ```javascript
 getUserData(username).then(data => setUserData(data));
@@ -156,14 +220,18 @@ And pass them on your components like so:
 
 ```javascript
 return (
-  <div>
-    <img src={avatar_url} />
-    {/*More stuff here!*/}
-  </div>
+  <main>
+    <UserHeader 
+      imgSrc={avatar_url}
+      userName={name}
+      userUrl={html_url}
+      followersCount={followers}
+    />
+  </main>
 );
 ```
 
-Now you _might_ be seeing something! If not, that's fine, you've followed instructions correctly.
+**Now you _might_ be seeing something! *If not, that's fine, you've followed instructions correctly*.**
 
 ### When the data isn't there
 
@@ -171,62 +239,91 @@ You might be seeing something like this now:
 
 `Uncaught TypeError: Cannot read property 'avatar_url' of null`
 
-Usually data over network gets to us slower than DOM renders content, this is when we need to provide a loading state so we're not trying to render content that is not there yet. In our case we'll just add a small safeguard before we destructure:
+Usually data over network gets to us slower than DOM renders content, this is when we need to provide a loading state, so we're not trying to render content that is not there yet. In our case we'll just add a small safeguard before we destructure:
 
 ```javascript
 if (!userData) {
   return <h3>...Loading</h3>;
 }
+
+const { avatar_url, html_url, name, followers, repos_url } = userData;
+
+return (
+  <main>
+    <UserHeader 
+      imgSrc={avatar_url}
+      userName={name}
+      userUrl={html_url}
+      followersCount={followers}
+    />
+  </main>
+);
 ```
 
-This will also help you to avoid UI errors and provide helpful error messages to your user. Note that unless the payload of the made request is particularly heavy you might want to skip loading state and just return `null` to defer rendering until the content is ready. This way you won't get a janky looking flash of loading state before the component finishes loading.
+This will also help you to avoid UI errors and provide helpful error messages to your user. Note that unless the payload of the made request is particularly heavy, you might want to skip loading state and just return `null` to defer rendering until the content is ready. This way you won't get a janky looking flash of loading state before the component finishes loading.
 
-If you feel fairly comfortable continuing ahead I'd like you to take some time to style your `<UserHeader/>` component to roughly match the design. You can use regular css, just create a file (a common convention is to name the css file to match the js filename) and import it at the top of your file:
+If you feel fairly comfortable continuing ahead, I'd like you to take some time to style your `<UserHeader/>` component to roughly match the design. You can use regular CSS, just create a file (a common convention is to name the CSS file to match the js filename) and import it at the top of your file:
 
 ```javascript
-import "./userHeader.css";
+import "./UserHeader.css";
 ```
 
 This import is handled by your bundler (Parcel in this case) and doesn't transform CSS into Javascript.
 
-Note: in jsx attributes are camelCase and some are slightly different, for example: `class` => `className`.
+Note: in jsx, some html attributes are camelCase and some are slightly different, for example: `class` => `className`.
 
 ### What's next?
 
 Hopefully you'll now have a nice looking header component for our Github user card! Next we'll tackle creating a list of your repositories.
 
-You might have noticed from the response we got from `getUserData` didn't include your repositories so we'll create another stateful component which fetches it's own data. We did however get a `repos_url` from the response which we'll pass down as a prop to our new component `<RepoList/>`.
+You might have noticed from the response we got from `getUserData` didn't include your repositories. We did, however, get a `repos_url` from the response. Let's move on to the next part of the workshop to see how we can tackle this.
 
-### Creating your repo list component
+### Creating your RepoList component
 
 Your next steps are:
 
 1. Create a new file for your `<RepoList/>` component.
-2. Add some mock data to the component
-3. Import it into the `UserHeader` file.
-4. Refactor your `getUserData` function to take a url as an argument so you can use it on both of the components.
-5. Fetch data in the `<RepoList/>` component with `useEffect` similarly to before.
+2. Add some basic structure and mock data to the component
+3. Import it into the `App` file.
+4. Refactor your `getUserData` function to take a full URL as an argument so you can use it on both of the components.
+5. Pass `repos_url` to `<RepoList />` as a prop from `App`
+6. Fetch data in the `<RepoList/>` component using the`url` prop with `useEffect` similarly to before.
 
-**There is a small gotcha!** If you try to render `<RepoList/>` before the parent component has `repos_url` you're going to run into errors. One way to handle this is to use a ternary statement to render the component only when the data is fully loaded:
+**There is a small gotcha!** If you try to render `<RepoList/>` before the parent component has `repos_url` you're going to run into errors as `RepoList` tries to use it immediately when it mounts. One way to handle this is to use a ternary statement to render the component only when we have the data we need:
 
 ```javascript
+if (!userData) {
+  return <h3>...Loading</h3>;
+}
+
+const { avatar_url, html_url, name, followers, repos_url } = userData;
+
 return (
-  <div>
-    <img src={avatar_url} />
-    <h2>{name}</h2>
-    {repos_url ? <RepoList url={repos_url} /> : null} // Could render a loading
-    component here instead
-  </div>
+  <main>
+    <UserHeader 
+      imgSrc={avatar_url}
+      userName={name}
+      userUrl={html_url}
+      followersCount={followers}
+    />
+    {repos_url ? <RepoList url={repos_url} /> : null} // Could render a loading component here instead
+  </main>
 );
 ```
 
-When your `<RepoList/>` is rendering correctly we can start to render some real data. You've probably noticed the data we have is an `Array`. A very common pattern is to create a functional component for the data that you want to render and then map over your data dynamically creating a list of the components. That's what we'll do next:
+When your `<RepoList/>` is showing correctly, we can start to render some real data. You've probably noticed the data we have is an `Array`. A very common pattern is to create a functional component for the data that you want to render and then map over your data dynamically creating a list of the components. That's what we'll do next:
 
 ```javascript
-// new file: repo.js for rendering a single repository
+// new file: Repo.js for rendering a single repository
 
 const Repo = ({ name, stargazers_count, description, html_url }) => {
-  return <li>{"Your jsx here!"}</li>;
+  return (
+    <li>
+      <a href={html_url}><h4>{name}</h4></a>
+      <p>{description}</p>
+      {/* Add your own styles, stargazers_count etc. here */}
+    </li>
+  );
 };
 
 export default Repo;
@@ -236,13 +333,26 @@ Don't forget to import your `Repo` component into the `RepoList!`
 
 ```javascript
 // In RepoList
-return (
-  <ul>
-    {repos.map(repo => (
-      <Repo key={repo.id} {...repo} />
-    ))}
-  </ul>
-);
+import Repo from './Repo'
+
+const RepoList = ({ url }) => {
+  const [repos, setRepos] = React.useState([]);
+
+  React.useEffect(() => {
+    getUserData(url).then(data => setRepos(data));
+  }, [url])
+
+  return (
+    <ul>
+      {repos.map((repo) => (
+        // Spreading props of a single repo's data to a single Repo component
+        <Repo key={repo.id} {...repo} />
+      ))}
+    </ul>
+  );
+};
+
+
 ```
 
 All dynamically rendered components like our `Repo` here need a `key` prop so React can keep track of the correct elements being added/removed from the DOM.
@@ -253,7 +363,6 @@ Great job! :sparkles:
 
 ### Stretch goals
 
-- Refactor the children of both stateful components into separate files and pass the state values down to them
 - More CSS
 - Create a form input to dynamically create a Github user card from any username
 
