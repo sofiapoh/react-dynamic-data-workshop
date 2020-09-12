@@ -3,6 +3,6 @@ import "./style.css";
 
 export const CardImage = ({ url }) => (
   <figure className="card-image--container">
-    <img className="card-image--img" src={url} />
+    <img className="card-image--img" src={url} alt="" />
   </figure>
 );
