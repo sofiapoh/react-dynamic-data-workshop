@@ -136,19 +136,12 @@ You can use any of your preferred method to create an API request, but I'll give
 
 ```javascript
 const checkResponse = (response) => {
-  if (response.status !== 200) {
-    console.log(`Error with the request! ${response.status}`);
-    return;
-  }
+  if (!response.ok) throw new Error(`Network error: ${response.status}`);
   return response.json();
 };
 
 export const getUserData = (username) => {
-  return fetch(`https://api.github.com/users/${username}`)
-    .then(checkResponse)
-    .catch((err) => {
-      throw new Error(`fetch getUserData failed ${err}`);
-    });
+  return fetch(`https://api.github.com/users/${username}`).then(checkResponse);
 };
 ```
 
