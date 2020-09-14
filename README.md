@@ -50,20 +50,6 @@ Running this command to increase the max watchers should fix it:
 
 `echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p`
 
-### Getting an access token
-
-Next, you'll need a GitHub auth token so that you won't get rate limited!
-
-Go to: `Settings > Developer Settings > Personal access tokens > Generate new token`
-
-For this workshop, you'll need to select `repo` and `user` scopes.
-
-When you get your access token, remember to save it somewhere! (But don't put it on GitHub). Create a file called `token.js` in the root of the workshop folder and put your token there. The file is already in the `.gitignore` for the workshop because we never want to commit private API tokens.
-
-```javascript
-export const token = "yourAccessToken";
-```
-
 ## What we'll be building?
 
 ### A GitHub user card!
@@ -144,14 +130,12 @@ Now let's get some real data showing! I like to separate functions that are not 
 
 ### Get the data
 
-Now we'll need a function that gets your GitHub user data. Create a function that makes a request to `https://api.github.com/users/{{your username}}?access_token={{your access token}}`
+Now we'll need a function that gets your GitHub user data. Create a function that makes a request to `https://api.github.com/users/{{your username}}`
 
-You can use any of your preferred method to create an API request, but I'll give an example with the `fetch` API. Don't forget to import the access token you created earlier; it's needed not to get rate limited. Try not to copy-paste; you'll learn more if you don't!
+You can use any of your preferred method to create an API request, but I'll give an example with the `fetch` API. Try not to copy-paste; you'll learn more if you don't!
 
 ```javascript
-import { token } from "../../token";
-
-const checkResponse = response => {
+const checkResponse = (response) => {
   if (response.status !== 200) {
     console.log(`Error with the request! ${response.status}`);
     return;
@@ -159,10 +143,10 @@ const checkResponse = response => {
   return response.json();
 };
 
-export const getUserData = username => {
-  return fetch(`https://api.github.com/users/${username}?access_token=${token}`)
+export const getUserData = (username) => {
+  return fetch(`https://api.github.com/users/${username}`)
     .then(checkResponse)
-    .catch(err => {
+    .catch((err) => {
       throw new Error(`fetch getUserData failed ${err}`);
     });
 };
