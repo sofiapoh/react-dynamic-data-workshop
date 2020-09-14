@@ -245,7 +245,7 @@ If you feel fairly comfortable continuing ahead, I'd like you to take some time 
 import "./UserHeader.css";
 ```
 
-This import is handled by your bundler (Parcel in this case) and doesn't transform CSS into Javascript.
+This import is handled by your bundler (Create React App/WebPack here) and doesn't transform CSS into Javascript.
 
 Note: in jsx, some html attributes are camelCase and some are slightly different, for example: `class` => `className`.
 
