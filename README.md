@@ -34,8 +34,12 @@ yarn start
 You should now see the following message:
 
 ```
-Server running at http://localhost:1234
-✨  Built in 1.22s.
+Compiled successfully!
+
+You can now view dynamic-data in the browser.
+
+  Local:            http://localhost:3000
+  On Your Network:  http://192.168.0.26:3000
 ```
 
 If you do not see this message make sure you have a version of node which is above 8 and npm or yarn installed. Make sure you remember to install dependencies.
