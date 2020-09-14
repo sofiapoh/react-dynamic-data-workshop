@@ -10,8 +10,7 @@ For this workshop, we'll use the GitHub API since it's well documented and famil
 Start by opening the workshop folder, don't peek into solution just yet!
 
 ```bash
-# clone the repo, ssh or HTTPS, whatever you usually do!
-git clone git@github.com:sofiapoh/react-dynamic-data-workshop.git
+# git clone this repo, ssh or HTTPS, whatever you usually do!
 
 cd react-dynamic-data-workshop
 
