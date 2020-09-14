@@ -206,15 +206,17 @@ return (
 );
 ```
 
-**Now you _might_ be seeing something! *If not, that's fine, you've followed instructions correctly*.**
+**🚨 You should now be seeing an error 🚨**
 
-### When the data isn't there
+```
+Uncaught TypeError: Cannot read property 'avatar_url' of null
+```
 
-You might be seeing something like this now:
+### When the data isn't there yet
 
-`Uncaught TypeError: Cannot read property 'avatar_url' of null`
+The first time this component renders the `data` state variable is set to `null`. Our `useEffect` won't run until _after_ the first render, so we need to handle this `null` case.
 
-Usually data over network gets to us slower than DOM renders content, this is when we need to provide a loading state, so we're not trying to render content that is not there yet. In our case we'll just add a small safeguard before we destructure:
+We need to provide a loading view, so we're not trying to render content that is not there yet. In our case we'll just add a small safeguard before we destructure:
 
 ```javascript
 if (!userData) {
