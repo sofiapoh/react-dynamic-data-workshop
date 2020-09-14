@@ -44,14 +44,9 @@ You can now view dynamic-data in the browser.
 
 If you do not see this message make sure you have a version of node which is above 8 and npm or yarn installed. Make sure you remember to install dependencies.
 
-If you're a Linux user you might get the following error when starting the dev server:
+If you're a Linux user you might get an error about exceeding the maximum number of file watchers.
 
-```
-events.js:137
-throw er; // Unhandled 'error' event^
-```
-
-Running this command should fix it:
+Running this command to increase the max watchers should fix it:
 
 `echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p`
 
