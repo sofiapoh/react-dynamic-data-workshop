@@ -10,8 +10,7 @@ For this workshop, we'll use the GitHub API since it's well documented and famil
 Start by opening the workshop folder, don't peek into solution just yet!
 
 ```bash
-# clone the repo, ssh or HTTPS, whatever you usually do!
-git clone git@github.com:sofiapoh/react-dynamic-data-workshop.git
+# git clone this repo, ssh or HTTPS, whatever you usually do!
 
 cd react-dynamic-data-workshop
 
@@ -35,36 +34,21 @@ yarn start
 You should now see the following message:
 
 ```
-Server running at http://localhost:1234
-✨  Built in 1.22s.
+Compiled successfully!
+
+You can now view dynamic-data in the browser.
+
+  Local:            http://localhost:3000
+  On Your Network:  http://192.168.0.26:3000
 ```
 
 If you do not see this message make sure you have a version of node which is above 8 and npm or yarn installed. Make sure you remember to install dependencies.
 
-If you're a Linux user you might get the following error when starting the dev server:
+If you're a Linux user you might get an error about exceeding the maximum number of file watchers.
 
-```
-events.js:137
-throw er; // Unhandled 'error' event^
-```
-
-Running this command should fix it:
+Running this command to increase the max watchers should fix it:
 
 `echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p`
-
-### Getting an access token
-
-Next, you'll need a GitHub auth token so that you won't get rate limited!
-
-Go to: `Settings > Developer Settings > Personal access tokens > Generate new token`
-
-For this workshop, you'll need to select `repo` and `user` scopes.
-
-When you get your access token, remember to save it somewhere! (But don't put it on GitHub). Create a file called `token.js` in the root of the workshop folder and put your token there. The file is already in the `.gitignore` for the workshop because we never want to commit private API tokens.
-
-```javascript
-export const token = "yourAccessToken";
-```
 
 ## What we'll be building?
 
@@ -146,27 +130,18 @@ Now let's get some real data showing! I like to separate functions that are not 
 
 ### Get the data
 
-Now we'll need a function that gets your GitHub user data. Create a function that makes a request to `https://api.github.com/users/{{your username}}?access_token={{your access token}}`
+Now we'll need a function that gets your GitHub user data. Create a function that makes a request to `https://api.github.com/users/{{your username}}`
 
-You can use any of your preferred method to create an API request, but I'll give an example with the `fetch` API. Don't forget to import the access token you created earlier; it's needed not to get rate limited. Try not to copy-paste; you'll learn more if you don't!
+You can use any of your preferred method to create an API request, but I'll give an example with the `fetch` API. Try not to copy-paste; you'll learn more if you don't!
 
 ```javascript
-import { token } from "../../token";
-
-const checkResponse = response => {
-  if (response.status !== 200) {
-    console.log(`Error with the request! ${response.status}`);
-    return;
-  }
+const checkResponse = (response) => {
+  if (!response.ok) throw new Error(`Network error: ${response.status}`);
   return response.json();
 };
 
-export const getUserData = username => {
-  return fetch(`https://api.github.com/users/${username}?access_token=${token}`)
-    .then(checkResponse)
-    .catch(err => {
-      throw new Error(`fetch getUserData failed ${err}`);
-    });
+export const getUserData = (username) => {
+  return fetch(`https://api.github.com/users/${username}`).then(checkResponse);
 };
 ```
 
@@ -231,15 +206,17 @@ return (
 );
 ```
 
-**Now you _might_ be seeing something! *If not, that's fine, you've followed instructions correctly*.**
+**🚨 You should now be seeing an error 🚨**
 
-### When the data isn't there
+```
+Uncaught TypeError: Cannot read property 'avatar_url' of null
+```
 
-You might be seeing something like this now:
+### When the data isn't there yet
 
-`Uncaught TypeError: Cannot read property 'avatar_url' of null`
+The first time this component renders the `data` state variable is set to `null`. Our `useEffect` won't run until _after_ the first render, so we need to handle this `null` case.
 
-Usually data over network gets to us slower than DOM renders content, this is when we need to provide a loading state, so we're not trying to render content that is not there yet. In our case we'll just add a small safeguard before we destructure:
+We need to provide a loading view, so we're not trying to render content that is not there yet. In our case we'll just add a small safeguard before we destructure:
 
 ```javascript
 if (!userData) {
@@ -268,7 +245,7 @@ If you feel fairly comfortable continuing ahead, I'd like you to take some time 
 import "./UserHeader.css";
 ```
 
-This import is handled by your bundler (Parcel in this case) and doesn't transform CSS into Javascript.
+This import is handled by your bundler (Create React App/WebPack here) and doesn't transform CSS into Javascript.
 
 Note: in jsx, some html attributes are camelCase and some are slightly different, for example: `class` => `className`.
 
